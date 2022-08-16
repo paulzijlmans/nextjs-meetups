@@ -1,15 +1,9 @@
-import { MongoClient } from 'mongodb';
+import { saveMeetup } from '../../utils/mongodb';
 
 async function handler(req, res) {
   if (req.method === 'POST') {
     const data = req.body;
-
-    const client = await MongoClient.connect(process.env.MONGO_DB_URI);
-    const db = client.db();
-    const meetupsCollection = db.collection('meetups');
-    await meetupsCollection.insertOne(data);
-    client.close();
-
+    saveMeetup(data);
     res.status(201).json({ message: 'Meetup inserted!' });
   }
 }
